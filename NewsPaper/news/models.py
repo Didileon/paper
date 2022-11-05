@@ -21,7 +21,14 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    description = models.TextField()
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -39,6 +46,9 @@ class Post(models.Model):
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
 
+    def __str__(self):
+        return f'{self.title.title()}'
+
     def like(self):
         self.rating += 1
         self.save()
@@ -47,8 +57,13 @@ class Post(models.Model):
         self.rating -= 1
         self.save()
 
-    def previw(self):
+    def preview(self):
         return self.text[0:124] + '...'
+
+
+    class Meta:
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Статьи'
 
 
 class PostCategory(models.Model):
@@ -71,5 +86,8 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+
+
 
 
